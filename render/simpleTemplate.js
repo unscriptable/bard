@@ -49,6 +49,7 @@ define(function () {
 		var end;
 
 		end = 0;
+		template = String(template);
 
 		template.replace(parseTemplateRx, function (m, dToken, mToken, pos) {
 			var token;

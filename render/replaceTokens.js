@@ -27,7 +27,7 @@ define(function (require) {
 		output = '';
 
 		parse(
-			String(template),
+			template,
 			function (text) { output += text; },
 			function (key, token) {
 				output += transform(key, token);

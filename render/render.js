@@ -3,7 +3,6 @@
 define(function (require) {
 
 	var replaceTokens = require('./replaceTokens');
-	var jsonPath = require('./jsonPath');
 
 	var parentTypes, parents, getFirstTagNameRx, isPlainTagNameRx;
 
@@ -117,7 +116,6 @@ define(function (require) {
 		var parentType, parent;
 		tagName = tagName.toLowerCase();
 		parentType = parentTypes[tagName] || 'div';
-		console.log('parentType', parentType);
 		parent = parents[parentType];
 		if (!parent) {
 			parent = parents[parentType] = document.createElement(parentType);
@@ -125,7 +123,6 @@ define(function (require) {
 				parentElement(parentType).appendChild(parent);
 			}
 		}
-		console.log('parent', parent);
 		return parent;
 	}
 

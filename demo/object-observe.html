@@ -16,18 +16,18 @@ curl.config(
 	}
 );
 
-curl(['bard/reactive', 'bard/render'], function (reactive, render) {
-	var root, reactor, model;
+curl(['bard/array', 'bard/render'], function (array, render) {
+	var root, reactive, model;
 
 	root = document.getElementById('top');
-	reactor = reactive(root, {
-		listName: 'person',
+	reactive = array(root, {
+		sectionName: 'person',
 		id: 'spid',
 		sortBy: 'lastname'
 	});
 	model = [];
 
-	Object.observe(model, reactor.updateModel);
+	Object.observe(model, reactive.updateModel);
 
 	model.push({
 		spid: 1,

@@ -15,11 +15,11 @@ define(function (require) {
 		if (!options.selector) options.selector = qsa;
 		if (!options.identify) {
 			options.identify = options.id
-				? createIdentifyByProperty(options.id)
+				? createIdentifyForProperty(options.id)
 				: identity;
 		}
 		if (!options.compare) {
-			options.compare = createCompareByProperty(options.sortBy || 'id');
+			options.compare = createCompareForProperty(options.sortBy || 'id');
 		}
 
 		var rdom = new Reactive(root, options);
@@ -41,17 +41,15 @@ define(function (require) {
 
 	function identity (obj) { return obj; }
 
-	function createIdentifyByProperty (propName) {
-		return function (obj) { return Object(obj)[propName]; };
+	function createIdentifyForProperty (prop) {
+		return function (obj) { return Object(obj)[prop]; };
 	}
 
-	function createCompareByProperty (propName) {
+	function createCompareForProperty (prop) {
 		return function (a, b) {
 			a = Object(a);
 			b = Object(b);
-			return a[propName] < b[propName]
-				? -1
-				: a[propName] > b[propName] ? 1 : 0;
+			return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : 0;
 		};
 	}
 

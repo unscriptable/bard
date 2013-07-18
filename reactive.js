@@ -12,9 +12,15 @@ define(function (require) {
 	function reactive (root, options) {
 
 		if (!options) options = {};
-		if (!options.identify) options.identify = identity;
-		if (!options.compare) options.compare = compareById;
 		if (!options.selector) options.selector = qsa;
+		if (!options.identify) {
+			options.identify = options.id
+				? createIdentifyByProperty(options.id)
+				: identity;
+		}
+		if (!options.compare) {
+			options.compare = createCompareByProperty(options.sortBy || 'id');
+		}
 
 		var rdom = new Reactive(root, options);
 
@@ -35,8 +41,18 @@ define(function (require) {
 
 	function identity (obj) { return obj; }
 
-	function compareById (a, b) {
-		return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
+	function createIdentifyByProperty (propName) {
+		return function (obj) { return Object(obj)[propName]; };
+	}
+
+	function createCompareByProperty (propName) {
+		return function (a, b) {
+			a = Object(a);
+			b = Object(b);
+			return a[propName] < b[propName]
+				? -1
+				: a[propName] > b[propName] ? 1 : 0;
+		};
 	}
 
 	function qsa (node, selector) {

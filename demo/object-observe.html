@@ -22,48 +22,62 @@ curl(['bard/reactive', 'bard/render'], function (reactive, render) {
 	root = document.getElementById('top');
 	reactor = reactive(root, {
 		listName: 'person',
-		id: 'lastname',
-		sortBy: 'firstname'
+		id: 'spid',
+		sortBy: 'lastname'
 	});
 	model = [];
 
 	Object.observe(model, reactor.updateModel);
 
 	model.push({
+		spid: 1,
 		firstname: 'Brian',
 		lastname: 'Cavalier',
-		superpower: '???'
+		superpower: '(please wait)'
 	});
 	model.push({
+		spid: 2,
 		firstname: 'John',
 		lastname: 'Hann',
-		superpower: '???'
+		superpower: '(please wait)'
 	});
 	setTimeout(function () {
 		model[0] = {
+			spid: model[0].spid,
 			firstname: model[0].firstname,
 			lastname: model[0].lastname,
 			superpower: 'Can has mind meld with the codez.'
 		};
 		model[1] = {
+			spid: model[1].spid,
 			firstname: model[1].firstname,
 			lastname: model[1].lastname,
 			superpower: 'Able to cram many codez into one file.'
 		};
+		model.push({
+			spid: 3,
+			firstname: 'Scott',
+			lastname: 'Andrews',
+			superpower: 'Can rest just about anywhere.'
+		});
 	}, 2000);
 });
 </script>
 
 </head>
 <body>
+
 <h2>Super Powers</h2>
-<ul id="top" data-bard-section="person"><li>
-	<h3>
-		<span data-bard-bind="text:firstname"></span>
-		<span data-bard-bind="text:lastname"></span>
-	</h3>
-	<i><span data-bard-bind="text:superpower"></span></i>
-</li></ul>
+
+<ul id="top" data-bard-section="person">
+	<li>
+		<h3>
+			<span data-bard-bind="text:lastname"></span>,
+			<span data-bard-bind="text:firstname"></span>
+		</h3>
+		<i><span data-bard-bind="text:superpower"></span></i>
+	</li>
+</ul>
 
 </body>
 </html>

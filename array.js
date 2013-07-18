@@ -1,18 +1,17 @@
 (function (define) {
 define(function (require) {
 
-	var Reactive = require('./lib/Reactive');
+	var NodeArray = require('./lib/NodeArray');
 
 	/**
 	 * Binds a dom node to data.
 	 * @param {HTMLElement} root
-	 * @param {Object} options @see {Reactive}
+	 * @param {Object} options @see {NodeArray}
 	 * @return {Object} with a push(updates) function and a pull() function.
 	 */
-	function reactive (root, options) {
+	function array (root, options) {
 
 		if (!options) options = {};
-		if (!options.selector) options.selector = qsa;
 		if (!options.identify) {
 			options.identify = createIdentifyForProperty(options.id || 'id');
 		}
@@ -20,7 +19,7 @@ define(function (require) {
 			options.compare = createCompareForProperty(options.sortBy || 'id');
 		}
 
-		var rdom = new Reactive(root, options);
+		var rdom = new NodeArray(root, options);
 
 		return {
 			updateModel: function (changes) {
@@ -35,7 +34,7 @@ define(function (require) {
 		};
 	}
 
-	return reactive;
+	return array;
 
 	function createIdentifyForProperty (prop) {
 		return function (obj) { return Object(obj)[prop]; };
@@ -49,10 +48,6 @@ define(function (require) {
 
 	function compare (a, b, prop) {
 		return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : 0;
-	}
-
-	function qsa (node, selector) {
-		return node.querySelectorAll(selector);
 	}
 
 });

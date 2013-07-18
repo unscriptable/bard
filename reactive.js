@@ -14,9 +14,7 @@ define(function (require) {
 		if (!options) options = {};
 		if (!options.selector) options.selector = qsa;
 		if (!options.identify) {
-			options.identify = options.id
-				? createIdentifyForProperty(options.id)
-				: identity;
+			options.identify = createIdentifyForProperty(options.id || 'id');
 		}
 		if (!options.compare) {
 			options.compare = createCompareForProperty(options.sortBy || 'id');
@@ -39,18 +37,18 @@ define(function (require) {
 
 	return reactive;
 
-	function identity (obj) { return obj; }
-
 	function createIdentifyForProperty (prop) {
 		return function (obj) { return Object(obj)[prop]; };
 	}
 
 	function createCompareForProperty (prop) {
 		return function (a, b) {
-			a = Object(a);
-			b = Object(b);
-			return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : 0;
+			return compare(Object(a), Object(b), prop);
 		};
+	}
+
+	function compare (a, b, prop) {
+		return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : 0;
 	}
 
 	function qsa (node, selector) {

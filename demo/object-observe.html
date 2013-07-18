@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Demo using Object.observe(array)</title>
+
+<script src="../amd_modules/curl/src/curl.js"></script>
+
+<script>
+curl.config(
+	{
+		baseUrl: '',
+		packages: {
+			bard: { location: '../' },
+			curl: { location: '../amd_modules/curl/src/curl' }
+		}
+	}
+);
+
+curl(['bard/reactive', 'bard/render'], function (reactive, render) {
+	var root, reactor, model;
+
+	root = document.getElementById('top');
+	reactor = reactive(root, {
+		listName: 'person',
+		id: 'lastname',
+		sort: 'firstname'
+	});
+	model = [];
+
+	Object.observe(model, reactor.updateModel);
+
+	model.push({
+		firstname: 'Brian',
+		lastname: 'Cavalier',
+		superpower: '???'
+	});
+	model.push({
+		firstname: 'John',
+		lastname: 'Hann',
+		superpower: '???'
+	});
+	setTimeout(function () {
+		model[0] = {
+			firstname: model[0].firstname,
+			lastname: model[0].lastname,
+			superpower: 'Can has mind meld with the codez.'
+		};
+		model[1] = {
+			firstname: model[1].firstname,
+			lastname: model[1].lastname,
+			superpower: 'Able to cram many codez into one file.'
+		};
+	}, 2000);
+});
+</script>
+
+</head>
+<body>
+<h2>Super Powers</h2>
+<ul id="top" data-bard-section="person"><li>
+	<h3>
+		<span data-bard-bind="text:firstname"></span>
+		<span data-bard-bind="text:lastname"></span>
+	</h3>
+	<i><span data-bard-bind="text:superpower"></span></i>
+</li></ul>
+
+</body>
+</html>

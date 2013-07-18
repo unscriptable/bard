@@ -2,7 +2,7 @@
 (function (define) {
 define(function (require) {
 
-	var replaceTokens = require('./replaceTokens');
+	var replaceTokens = require('./lib/replaceTokens');
 
 	var parentTypes, parents, getFirstTagNameRx, isPlainTagNameRx;
 

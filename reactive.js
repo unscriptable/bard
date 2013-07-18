@@ -24,6 +24,9 @@ define(function (require) {
 			},
 			setModel: function (all) {
 				return rdom.set(all);
+			},
+			findItem: function (nodeOrEvent) {
+				return rdom.findItem(nodeOrEvent);
 			}
 		};
 	}

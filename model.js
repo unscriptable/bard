@@ -20,6 +20,9 @@ define(function (require) {
 			},
 			findItem: function (nodeOrEvent) {
 				return rdom.findItem(nodeOrEvent);
+			},
+			clear: function () {
+				return rdom.clear();
 			}
 		};
 	}

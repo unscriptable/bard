@@ -17,7 +17,7 @@ curl.config(
 );
 
 curl(['bard/array', 'bard/model'], function (array, model) {
-	var root, form, reactiveList, reactiveForm, superheros;
+	var root, form, reactiveList, reactiveForm, coders;
 
 	root = document.getElementById('list');
 	form = document.getElementById('edit');
@@ -29,16 +29,16 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 	});
 	reactiveForm = model(form, { sectionName: 'person' });
 
-	superheros = [];
-	Object.observe(superheros, reactiveList.updateModel);
+	coders = [];
+	Object.observe(coders, reactiveList.updateModel);
 
-	superheros.push({
+	coders.push({
 		spid: 1,
 		firstname: 'Brian',
 		lastname: 'Cavalier',
 		superpower: '(please wait)'
 	});
-	superheros.push({
+	coders.push({
 		spid: 2,
 		firstname: 'John',
 		lastname: 'Hann',
@@ -46,19 +46,19 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 	});
 
 	setTimeout(function () {
-		superheros[0] = {
-			spid: superheros[0].spid,
-			firstname: superheros[0].firstname,
-			lastname: superheros[0].lastname,
+		coders[0] = {
+			spid: coders[0].spid,
+			firstname: coders[0].firstname,
+			lastname: coders[0].lastname,
 			superpower: 'Can has mind meld with the codez.'
 		};
-		superheros[1] = {
-			spid: superheros[1].spid,
-			firstname: superheros[1].firstname,
-			lastname: superheros[1].lastname,
+		coders[1] = {
+			spid: coders[1].spid,
+			firstname: coders[1].firstname,
+			lastname: coders[1].lastname,
 			superpower: 'Able to cram many codez into one file.'
 		};
-		superheros.push({
+		coders.push({
 			spid: 3,
 			firstname: 'Scott',
 			lastname: 'Andrews',
@@ -68,19 +68,26 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 
 	document.body.addEventListener('click', function (e) {
 		e.preventDefault();
-		var superhero = reactiveList.findItem(e);
-		if (superhero) {
+		var coder = reactiveList.findItem(e);
+		if (coder) {
 			// how do we observe real-time changes?
-			reactiveForm.setModel(superhero);
+			reactiveForm.setModel(coder);
 		}
 	}, false);
 
+	// TODO: why aren't these form events firing?
+
 	form.addEventListener('submit', function (e) {
 		e.preventDefault();
-		var superhero = reactiveForm.findItem(e);
-		if (superhero) {
+		var coder = reactiveForm.findItem(e);
+		if (coder) {
 			// now what?
 		}
+	}, false);
+
+	form.addEventListener('rest', function (e) {
+		e.preventDefault();
+		reactiveForm.clear();
 	}, false);
 
 });
@@ -89,7 +96,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 </head>
 <body>
 
-<h2>Super Heroes</h2>
+<h2>Super coders</h2>
 
 <ul id="list" data-bard-section="person">
 	<li>
@@ -103,13 +110,13 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 
 <p>(click to edit)</p>
 <hr/>
-<form id="edit" data-bard-section="person">
+<form method="post" action="#" id="edit" data-bard-section="person">
 	<h3>
-		Name: <span data-bard-bind="text:lastname"></span>
+		Super coder: <span data-bard-bind="text:lastname"></span>
 		<span data-bard-bind="text:firstname"></span>
 	</h3>
 	<label>
-		Super power
+		Super power:
 		<textarea data-bard-bind="value:superpower"></textarea>
 	</label>
 	<br/>
@@ -118,7 +125,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 </form>
 
 <style>
-	ul { padding: 0; }
+	ul { padding: 0; background-color: #eee; }
 	li { list-style: none; }
 	li:hover { background-color: #efe; }
 </style>

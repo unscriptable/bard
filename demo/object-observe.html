@@ -16,60 +16,82 @@ curl.config(
 	}
 );
 
-curl(['bard/array', 'bard/render'], function (array, render) {
-	var root, reactive, model;
+curl(['bard/array', 'bard/model'], function (array, model) {
+	var root, form, reactiveList, reactiveForm, superheros;
 
-	root = document.getElementById('top');
-	reactive = array(root, {
+	root = document.getElementById('list');
+	form = document.getElementById('edit');
+
+	reactiveList = array(root, {
 		sectionName: 'person',
 		id: 'spid',
 		sortBy: 'lastname'
 	});
-	model = [];
+	reactiveForm = model(form, { sectionName: 'person' });
 
-	Object.observe(model, reactive.updateModel);
+	superheros = [];
+	Object.observe(superheros, reactiveList.updateModel);
 
-	model.push({
+	superheros.push({
 		spid: 1,
 		firstname: 'Brian',
 		lastname: 'Cavalier',
 		superpower: '(please wait)'
 	});
-	model.push({
+	superheros.push({
 		spid: 2,
 		firstname: 'John',
 		lastname: 'Hann',
 		superpower: '(please wait)'
 	});
+
 	setTimeout(function () {
-		model[0] = {
-			spid: model[0].spid,
-			firstname: model[0].firstname,
-			lastname: model[0].lastname,
+		superheros[0] = {
+			spid: superheros[0].spid,
+			firstname: superheros[0].firstname,
+			lastname: superheros[0].lastname,
 			superpower: 'Can has mind meld with the codez.'
 		};
-		model[1] = {
-			spid: model[1].spid,
-			firstname: model[1].firstname,
-			lastname: model[1].lastname,
+		superheros[1] = {
+			spid: superheros[1].spid,
+			firstname: superheros[1].firstname,
+			lastname: superheros[1].lastname,
 			superpower: 'Able to cram many codez into one file.'
 		};
-		model.push({
+		superheros.push({
 			spid: 3,
 			firstname: 'Scott',
 			lastname: 'Andrews',
 			superpower: 'Can rest just about anywhere.'
 		});
 	}, 2000);
+
+	document.body.addEventListener('click', function (e) {
+		e.preventDefault();
+		var superhero = reactiveList.findItem(e);
+		if (superhero) {
+			// how do we observe real-time changes?
+			reactiveForm.setModel(superhero);
+		}
+	}, false);
+
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		var superhero = reactiveForm.findItem(e);
+		if (superhero) {
+			// now what?
+		}
+	}, false);
+
 });
 </script>
 
 </head>
 <body>
 
-<h2>Super Powers</h2>
+<h2>Super Heroes</h2>
 
-<ul id="top" data-bard-section="person">
+<ul id="list" data-bard-section="person">
 	<li>
 		<h3>
 			<span data-bard-bind="text:lastname"></span>,
@@ -79,5 +101,26 @@ curl(['bard/array', 'bard/render'], function (array, render) {
 	</li>
 </ul>
 
+<p>(click to edit)</p>
+<hr/>
+<form id="edit" data-bard-section="person">
+	<h3>
+		Name: <span data-bard-bind="text:lastname"></span>
+		<span data-bard-bind="text:firstname"></span>
+	</h3>
+	<label>
+		Super power
+		<textarea data-bard-bind="value:superpower"></textarea>
+	</label>
+	<br/>
+	<button type="submit">Save</button>
+	<button type="reset">Clear</button>
+</form>
+
+<style>
+	ul { padding: 0; }
+	li { list-style: none; }
+	li:hover { background-color: #efe; }
+</style>
 </body>
 </html>

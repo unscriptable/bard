@@ -5,10 +5,11 @@ define(function (require) {
 
 	function model (root, options) {
 
-		if (!options) options = {};
+		options = Object.create(options);
+
 		if (!options.selector) options.selector = qsa;
 
-		var rdom = new NodeArray(root, options);
+		var rdom = new NodeModel(root, options);
 
 		return {
 			updateModel: function (changes) {

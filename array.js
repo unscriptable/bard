@@ -11,7 +11,8 @@ define(function (require) {
 	 */
 	function array (root, options) {
 
-		if (!options) options = {};
+		options = Object.create(options);
+
 		if (!options.identify) {
 			options.identify = createIdentifyForProperty(options.id || 'id');
 		}

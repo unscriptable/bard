@@ -25,7 +25,11 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 	reactiveList = array(root, {
 		sectionName: 'person',
 		id: 'spid',
-		sortBy: 'lastname'
+		sortBy: 'lastname',
+		transform: function (val, key) {
+			if (val == null && /superpower$/.test(key)) return 'retrieving...';
+			else return val;
+		}
 	});
 	reactiveForm = model(form, { sectionName: 'person' });
 
@@ -35,14 +39,12 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 	coders.push({
 		spid: 1,
 		firstname: 'Brian',
-		lastname: 'Cavalier',
-		superpower: '(please wait)'
+		lastname: 'Cavalier'
 	});
 	coders.push({
 		spid: 2,
 		firstname: 'John',
-		lastname: 'Hann',
-		superpower: '(please wait)'
+		lastname: 'Hann'
 	});
 
 	setTimeout(function () {

@@ -34,7 +34,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 	reactiveForm = model(form, { sectionName: 'person' });
 
 	coders = [];
-	Object.observe(coders, reactiveList.updateModel);
+	Object.observe(coders, reactiveList.update);
 
 	coders.push({
 		spid: 1,
@@ -58,7 +58,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 			spid: coders[1].spid,
 			firstname: coders[1].firstname,
 			lastname: coders[1].lastname,
-			superpower: 'Able to cram many codez into one file.'
+			superpower: 'Able to cram tall bundles in a single build.'
 		};
 		coders.push({
 			spid: 3,
@@ -66,31 +66,56 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 			lastname: 'Andrews',
 			superpower: 'Can rest just about anywhere.'
 		});
+		coders.push({
+			spid: 4,
+			firstname: 'Jeremy',
+			lastname: 'Grelle',
+			superpower: 'Able to be coherent at 7 AM during standups.'
+		});
 	}, 2000);
 
 	document.body.addEventListener('click', function (e) {
+		if (e.target.nodeName != 'BUTTON') return;
 		e.preventDefault();
-		var coder = reactiveList.findItem(e);
+		var coder = reactiveList.find(e);
 		if (coder) {
 			// how do we observe real-time changes?
-			reactiveForm.setModel(coder);
+			reactiveForm.set(coder);
 		}
 	}, false);
 
-	// TODO: why aren't these form events firing?
+	// TODO: why aren't submit and reset form events firing?
 
-	form.addEventListener('submit', function (e) {
+//	form.addEventListener('submit', function (e) {
+	form.addEventListener('click', function (e) {
+		if (e.target.type != 'submit') return;
 		e.preventDefault();
-		var coder = reactiveForm.findItem(e);
+		var coder = reactiveForm.find(e);
 		if (coder) {
-			// now what?
+			var updated = reactiveForm.get(coder);
+			// this is unfortunately lame:
+			coders.some(function (coder, i) {
+				if (coder.spid == updated.spid) {
+					coders[i] = clone(updated);
+					return true;
+				}
+			});
+			reactiveForm.clear();
 		}
 	}, false);
 
-	form.addEventListener('rest', function (e) {
+	form.addEventListener('reset', function (e) {
 		e.preventDefault();
 		reactiveForm.clear();
 	}, false);
+
+	function clone (obj) {
+		var o = {};
+		for (var p in obj) {
+			if (obj.hasOwnProperty(p)) o[p] = obj[p];
+		}
+		return o;
+	}
 
 });
 </script>
@@ -107,6 +132,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 			<span data-bard-bind="text:firstname"></span>
 		</h3>
 		<i><span data-bard-bind="text:superpower"></span></i>
+		<button type="button">Edit</button>
 	</li>
 </ul>
 
@@ -114,12 +140,12 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 <hr/>
 <form method="post" action="#" id="edit" data-bard-section="person">
 	<h3>
-		Super coder: <span data-bard-bind="text:lastname"></span>
-		<span data-bard-bind="text:firstname"></span>
+		Super coder: <input data-bard-bind="value:lastname"/>
+		<input data-bard-bind="value:firstname"/>
 	</h3>
 	<label>
 		Super power:
-		<textarea data-bard-bind="value:superpower"></textarea>
+		<textarea data-bard-bind="value:superpower" cols="80"></textarea>
 	</label>
 	<br/>
 	<button type="submit">Save</button>

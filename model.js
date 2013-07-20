@@ -12,18 +12,32 @@ define(function (require) {
 
 		var rdom = new NodeModel(root, options);
 
+		// TODO: support path property on change objects
+		// TODO: also support changes property to compare to path
+
 		return {
-			updateModel: function (changes) {
-				return rdom.update(changes);
+			update: function (changes) {
+				// changes is an array of objects: { type, object, name [, oldValue] }
+				// type can be "new", "deleted", "updated", or "reconfigured"
+				var model = {};
+				// collapse changes
+				changes.forEach(function (change) {
+					var prop = change.object[change.name];
+					model[prop] = change.object[prop];
+				});
+				return rdom.updateModel(model);
 			},
-			setModel: function (all) {
-				return rdom.set(all);
+			set: function (all) {
+				return rdom.setModel(all);
 			},
-			findItem: function (nodeOrEvent) {
-				return rdom.findItem(nodeOrEvent);
+			get: function () {
+				return rdom.getModel();
+			},
+			find: function (nodeOrEvent) {
+				return rdom.findModel(nodeOrEvent);
 			},
 			clear: function () {
-				return rdom.clear();
+				return rdom.clearModel();
 			}
 		};
 	}

@@ -23,18 +23,43 @@ define(function (require) {
 
 		var rdom = new NodeArray(root, options);
 
+		// TODO: support path property on change objects
+		// TODO: also support changes property to compare to path
+		// Note: array.splice(n, ...) causes array.length-n+1 change records!
+
+
 		return {
-			updateModel: function (changes) {
-				return rdom.update(changes);
+			update: function (changes) {
+				// changes is an array of objects: { type, object, name [, oldValue] }
+				// type can be "new", "deleted", "updated", or "reconfigured"
+				changes.forEach(function (change) {
+					var model;
+
+					if (!Array.isArray(change.object)) throw new Error('Change record is not for an array.');
+					if (isNaN(change.name)) return;
+
+					model = change.object[change.name];
+
+					if ('new' == change.type) {
+						rdom.insertModel(model);
+					}
+					else if ('deleted' == change.type) {
+						rdom.deleteModel(change.oldValue);
+					}
+					else if ('updated' == change.type) {
+						rdom.updateModel(model, change.oldValue);
+					}
+
+				}, this);
 			},
-			setModel: function (all) {
-				return rdom.set(all);
+			set: function (all) {
+				return rdom.setArray(all);
 			},
-			findItem: function (nodeOrEvent) {
-				return rdom.findItem(nodeOrEvent);
+			find: function (nodeOrEvent) {
+				return rdom.findModel(nodeOrEvent);
 			},
 			clear: function () {
-				return rdom.clear();
+				return rdom.clearModel();
 			}
 		};
 	}

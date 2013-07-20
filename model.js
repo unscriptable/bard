@@ -1,7 +1,8 @@
+/** @license MIT License (c) copyright 2013 original authors */
 (function (define) {
 define(function (require) {
 
-	var NodeModel = require('./lib/NodeModel')
+	var NodeModel = require('./lib/NodeModel');
 
 	function model (root, options) {
 

@@ -35,8 +35,8 @@ define(function (require) {
 				changes.forEach(function (change) {
 					var model;
 
-					if (!Array.isArray(change.object)) throw new Error('Change record is not for an array.');
-					if (isNaN(change.name)) return;
+//					if (!Array.isArray(change.object)) throw new Error('Change record is not for an array.');
+//					if (isNaN(change.name)) return;
 
 					model = change.object[change.name];
 
@@ -53,7 +53,7 @@ define(function (require) {
 				}, this);
 			},
 			set: function (all) {
-				return rdom.setArray(all);
+				return rdom.setCollection(all);
 			},
 			find: function (nodeOrEvent) {
 				return rdom.findModel(nodeOrEvent);

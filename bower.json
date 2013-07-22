@@ -1,6 +1,6 @@
 {
 	"name": "bard",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"main": "reactive",
 	"ignore": [
 	"node_modules",

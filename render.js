@@ -2,8 +2,6 @@
 (function (define) {
 define(function (require) {
 
-	var replaceTokens = require('./lib/replaceTokens');
-
 	var parentTypes, parents, getFirstTagNameRx, isPlainTagNameRx;
 
 	// elements that could be used as root nodes and their natural parent type.

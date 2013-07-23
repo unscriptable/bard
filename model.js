@@ -6,7 +6,7 @@ define(function (require) {
 
 	function model (root, options) {
 
-		options = Object.create(options);
+		options = Object.create(options || null);
 
 		if (!options.selector) options.selector = qsa;
 

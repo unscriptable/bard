@@ -12,7 +12,7 @@ define(function (require) {
 	 */
 	function array (root, options) {
 
-		options = Object.create(options);
+		options = Object.create(options || null);
 
 		if (!options.identify) {
 			options.identify = createIdentifyForProperty(options.id || 'id');

@@ -1,11 +1,8 @@
 {
 	"name": "bard",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"main": "reactive",
-	"ignore": [
-	"node_modules",
-	"amd_modules"
-	],
+	"ignore": [ "node_modules", "amd_modules" ],
 	"devDependencies": {
 		"curl": "0.7.4"
 	}

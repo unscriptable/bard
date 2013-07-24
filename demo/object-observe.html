@@ -16,12 +16,12 @@ curl.config(
 	}
 );
 
-curl(['bard/array', 'bard/model', 'bard/lib/attrBinder'], function (array, model, attrBinder) {
+curl(['bard/array', 'bard/model', 'bard/bind/byAttr'], function (array, model, byAttr) {
 	var root, form, binder, reactiveList, reactiveForm, coders;
 
 	root = document.getElementById('list');
 	form = document.getElementById('edit');
-	binder = attrBinder({});
+	binder = byAttr({});
 
 	reactiveList = array(root, {
 		binder: binder,

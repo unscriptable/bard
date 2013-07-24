@@ -1,15 +1,15 @@
 (function (define) {
 define(function (require) {
 
-	var extractDomAttrs = require('./attrExtractor');
-	var createAccessors = require('./nodeAccessor');
+	var extractDomAttrs = require('../lib/attrExtractor');
+	var createAccessors = require('../lib/nodeAccessor');
 
 	var bindAttr = 'data-bard-bind';
 	var sectionAttr = 'data-bard-section';
 
-	return attrBinder;
+	return byAttr;
 
-	function attrBinder (options) {
+	function byAttr (options) {
 		var extractor;
 
 		options = Object.create(options || null);

@@ -1,7 +1,7 @@
 (function (define) {
 define(function (require) {
 
-	var cssExtractor = require('./cssExtractor');
+	var cssExtractor = require('../lib/cssExtractor');
 	var nodeAccessor = require('../lib/nodeAccessor');
 
 	return bySelectorMap;

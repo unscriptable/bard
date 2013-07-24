@@ -2,12 +2,12 @@
 (function (define) {
 define(function (require) {
 
-	var NodeArray = require('./lib/NodeArray');
+	var NodeCollection = require('./lib/NodeCollection');
 
 	/**
 	 * Binds a dom node to data.
 	 * @param {HTMLElement} root
-	 * @param {Object} options @see {NodeArray}
+	 * @param {Object} options @see {NodeCollection}
 	 * @return {Object} with a push(updates) function and a pull() function.
 	 */
 	function array (root, options) {
@@ -21,7 +21,7 @@ define(function (require) {
 			options.compare = createCompareForProperty(options.sortBy || 'id');
 		}
 
-		var rdom = new NodeArray(root, options);
+		var rdom = new NodeCollection(root, options);
 
 		// TODO: support path property on change objects
 		// TODO: also support changes property to compare to path

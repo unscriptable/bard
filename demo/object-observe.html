@@ -16,15 +16,14 @@ curl.config(
 	}
 );
 
-curl(['bard/array', 'bard/model', 'bard/bind/byAttr'], function (array, model, byAttr) {
-	var root, form, binder, reactiveList, reactiveForm, coders;
+curl(['bard/array', 'bard/model', 'bard/bind/byAttr', 'bard/bind/bySelectorMap'], function (array, model, byAttr, bySelectorMap) {
+	var root, form, reactiveList, reactiveForm, coders;
 
 	root = document.getElementById('list');
 	form = document.getElementById('edit');
-	binder = byAttr({});
 
 	reactiveList = array(root, {
-		binder: binder,
+		binder: byAttr({}),
 		id: 'spid',
 		sortBy: 'lastname',
 		transform: function (val, key) {
@@ -32,7 +31,15 @@ curl(['bard/array', 'bard/model', 'bard/bind/byAttr'], function (array, model, b
 			else return val;
 		}
 	});
-	reactiveForm = model(form, { binder: binder });
+	reactiveForm = model(form, {
+		binder: bySelectorMap({
+			bindings: {
+				firstname: '.firstname',
+				lastname: '.lastname',
+				superpower: '.superpower'
+			}
+		})
+	});
 
 	coders = [];
 	Object.observe(coders, reactiveList.update);
@@ -141,12 +148,12 @@ curl(['bard/array', 'bard/model', 'bard/bind/byAttr'], function (array, model, b
 <hr/>
 <form method="post" action="#" id="edit" data-bard-section="person">
 	<h3>
-		Super coder: <input data-bard-bind="value:lastname"/>
-		<input data-bard-bind="value:firstname"/>
+		Super coder: <input class="firstname" data-bard-bind="value:lastname"/>
+		<input class="lastname" data-bard-bind="value:firstname"/>
 	</h3>
 	<label>
 		Super power:
-		<textarea data-bard-bind="value:superpower" cols="80"></textarea>
+		<textarea class="superpower" data-bard-bind="value:superpower" cols="80"></textarea>
 	</label>
 	<br/>
 	<button type="submit">Save</button>

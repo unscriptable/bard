@@ -8,8 +8,6 @@ define(function (require) {
 
 		options = Object.create(options || null);
 
-		if (!options.selector) options.selector = qsa;
-
 		var rdom = new NodeModel(root, options);
 
 		// TODO: support path property on change objects
@@ -43,10 +41,6 @@ define(function (require) {
 	}
 
 	return model;
-
-	function qsa (node, selector) {
-		return node.querySelectorAll(selector);
-	}
 
 });
 }(

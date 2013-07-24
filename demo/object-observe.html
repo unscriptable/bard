@@ -16,14 +16,15 @@ curl.config(
 	}
 );
 
-curl(['bard/array', 'bard/model'], function (array, model) {
-	var root, form, reactiveList, reactiveForm, coders;
+curl(['bard/array', 'bard/model', 'bard/lib/attrBinder'], function (array, model, attrBinder) {
+	var root, form, binder, reactiveList, reactiveForm, coders;
 
 	root = document.getElementById('list');
 	form = document.getElementById('edit');
+	binder = attrBinder({});
 
 	reactiveList = array(root, {
-		sectionName: 'person',
+		binder: binder,
 		id: 'spid',
 		sortBy: 'lastname',
 		transform: function (val, key) {
@@ -31,7 +32,7 @@ curl(['bard/array', 'bard/model'], function (array, model) {
 			else return val;
 		}
 	});
-	reactiveForm = model(form, { sectionName: 'person' });
+	reactiveForm = model(form, { binder: binder });
 
 	coders = [];
 	Object.observe(coders, reactiveList.update);

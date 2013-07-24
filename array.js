@@ -35,12 +35,12 @@ define(function (require) {
 				changes.forEach(function (change) {
 					var model;
 
-					if (!Array.isArray(change.object)) throw new Error('Change record is not for an array.');
-					if (isNaN(change.name)) return;
-
 					model = change.object[change.name];
 
-					if ('new' == change.type) {
+					if (typeof model != 'object') {
+						// skip 'length' property, etc.
+					}
+					else if ('new' == change.type) {
 						rdom.insertModel(model);
 					}
 					else if ('deleted' == change.type) {
@@ -53,7 +53,7 @@ define(function (require) {
 				}, this);
 			},
 			set: function (all) {
-				return rdom.setArray(all);
+				return rdom.setCollection(all);
 			},
 			find: function (nodeOrEvent) {
 				return rdom.findModel(nodeOrEvent);

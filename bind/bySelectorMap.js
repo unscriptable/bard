@@ -1,22 +1,17 @@
 (function (define) {
 define(function (require) {
 
-	var extractDomAttrs = require('../lib/attrExtractor');
+	var cssExtractor = require('./cssExtractor');
 	var nodeAccessor = require('../lib/nodeAccessor');
 
-	var bindAttr = 'data-bard-bind';
-	var sectionAttr = 'data-bard-section';
+	return bySelectorMap;
 
-	return byAttr;
-
-	function byAttr (options) {
+	function bySelectorMap (options) {
 		var extractor;
 
 		options = Object.create(options || null);
-		if (!options.sectionAttr) options.sectionAttr = sectionAttr;
-		if (!options.bindAttr) options.bindAttr = bindAttr;
 
-		extractor = extractDomAttrs(options);
+		extractor = cssExtractor(options);
 
 		return function (node) {
 			var getters, setters, nodeAttrs;
@@ -26,9 +21,8 @@ define(function (require) {
 			nodeAttrs = extractor(node);
 
 			nodeAttrs.forEach(function (binding) {
-				if (!binding.bind) return;
 				binding.bind.forEach(function (mapping) {
-					var accessor;
+					var prop, accessor;
 					accessor = nodeAccessor(binding.node, mapping[0], mapping[1]);
 					if (accessor.set) setters.push(accessor.set);
 					if (accessor.get) getters.push(accessor.get);
@@ -43,7 +37,7 @@ define(function (require) {
 					for (var i = 0; i < getters.length; i++) getters[i](receiver);
 				}
 			};
-		}
+		};
 	}
 
 });

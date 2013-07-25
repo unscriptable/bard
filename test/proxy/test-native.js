@@ -7,9 +7,9 @@ refute = buster.refute;
 
 define(function (require) {
 
-	var native = require('../../proxy/native');
+	var _native = require('../../proxy/native');
 
-	var obj, array;
+	var obj, array, defNative;
 
 	obj = {
 		one: {
@@ -28,39 +28,41 @@ define(function (require) {
 
 	obj.array = array;
 
-	buster.testCase('proxy/native', {
+	defNative = _native();
+
+	buster.testCase('proxy/_native', {
 //		'should fail silently when reading from primitives': function () {
-//			refute.exception(function () { native.get(5, 'foo'); });
+//			refute.exception(function () { _native().get(5, 'foo'); });
 //		},
 //		'should fail silently when writing to primitives': function () {
-//			refute.exception(function () { native.set(5, 'foo', 3); });
+//			refute.exception(function () { _native().set(5, 'foo', 3); });
 //		},
 		'should support dot syntax to read an object property': function () {
-			assert.equals(3, native.get(obj, 'one.two.three'));
+			assert.equals(3, defNative.get(obj, 'one.two.three'));
 		},
 		'should support dot syntax to write an object property': function () {
-			native.set(obj, 'one.two.three', 'three');
+			defNative.set(obj, 'one.two.three', 'three');
 			assert.equals('three', obj.one.two.three);
-			native.set(obj, 'one.two.three', 3);
+			defNative.set(obj, 'one.two.three', 3);
 		},
 		'should support bracket syntax to read an object property': function () {
-			assert.equals(3, native.get(obj, '["one"]["two"]["three"]'));
+			assert.equals(3, defNative.get(obj, '["one"]["two"]["three"]'));
 		},
 		'should support bracket syntax to write an object property': function () {
-			native.set(obj, '["one"]["two"]["three"]', 'three');
+			defNative.set(obj, '["one"]["two"]["three"]', 'three');
 			assert.equals('three', obj.one.two.three);
-			native.set(obj, '["one"]["two"]["three"]', 3);
+			defNative.set(obj, '["one"]["two"]["three"]', 3);
 		},
 		'should support bracket syntax to read an array item': function () {
-			assert.equals(1, native.get(obj, 'array[1].number'));
-			assert.equals(3, native.get(array, '[3].one.two.three'));
+			assert.equals(1, defNative.get(obj, 'array[1].number'));
+			assert.equals(3, defNative.get(array, '[3].one.two.three'));
 		},
 		'should throw if path is too long or doesn\'t match structure': function () {
-			assert.exception(function () { native.get(obj, 'array[1].foofoo.blah'); });
-			assert.exception(function () { native.set(obj, 'array[1].foofoo.doh', 3); });
+			assert.exception(function () { defNative.get(obj, 'array[1].foofoo.blah'); });
+			assert.exception(function () { defNative.set(obj, 'array[1].foofoo.doh', 3); });
 		},
 		'should construct structure from path': function () {
-			var obj = native.set({}, 'one["two"].three', 3, native.construct);
+			var obj = defNative.set({}, 'one["two"].three', 3, true);
 			assert.equals(obj, { one: { two: { three: 3 } } });
 		}
 	});

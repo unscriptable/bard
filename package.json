@@ -1,6 +1,6 @@
 {
 	"name": "bard",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"main": "reactive",
 	"ignore": [ "node_modules", "amd_modules" ],
 	"keywords": ["beck", "commonjs", "modules", "amd", "module", "es6"],

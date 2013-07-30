@@ -3,6 +3,7 @@
 define(function (require) {
 
 	var NodeCollection = require('./lib/NodeCollection');
+	var proxy = require('./proxy/native');
 
 	/**
 	 * Binds a dom node to data.
@@ -17,8 +18,12 @@ define(function (require) {
 		if (!options.identify) {
 			options.identify = createIdentifyForProperty(options.id || 'id');
 		}
+		if (!options.proxy) {
+			options.proxy = proxy({ missing: function () { return ''; } });
+		}
 		if (!options.compare) {
-			options.compare = createCompareForProperty(options.sortBy || 'id');
+			options.compare = createCompareForProperty(options.sortBy || 'id',
+				options.proxy);
 		}
 
 		var rdom = new NodeCollection(root, options);
@@ -35,19 +40,20 @@ define(function (require) {
 				changes.forEach(function (change) {
 					var model;
 
-					model = change.object[change.name];
-
-					if (typeof model != 'object') {
-						// skip 'length' property, etc.
-					}
-					else if ('new' == change.type) {
-						rdom.insertModel(model);
-					}
-					else if ('deleted' == change.type) {
+					if ('deleted' == change.type) {
 						rdom.deleteModel(change.oldValue);
-					}
-					else if ('updated' == change.type) {
-						rdom.updateModel(model, change.oldValue);
+					} else {
+						model = change.object[change.name];
+
+						if (typeof model != 'object') {
+							// skip 'length' property, etc.
+						}
+						else if ('new' == change.type) {
+							rdom.insertModel(model);
+						}
+						else if ('updated' == change.type) {
+							rdom.updateModel(model, change.oldValue);
+						}
 					}
 
 				}, this);
@@ -73,14 +79,14 @@ define(function (require) {
 		return function (obj) { return Object(obj)[prop]; };
 	}
 
-	function createCompareForProperty (prop) {
+	function createCompareForProperty (prop, proxy) {
 		return function (a, b) {
-			return compare(Object(a), Object(b), prop);
+			return compare(proxy.get(Object(a), prop), proxy.get(Object(b), prop));
 		};
 	}
 
-	function compare (a, b, prop) {
-		return a[prop] < b[prop] ? -1 : a[prop] > b[prop] ? 1 : 0;
+	function compare (a, b) {
+		return a < b ? -1 : a > b ? 1 : 0;
 	}
 
 });

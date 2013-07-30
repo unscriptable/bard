@@ -1,6 +1,6 @@
 {
 	"name": "bard",
-	"version": "0.0.5",
+	"version": "0.0.56",
 	"main": "reactive",
 	"ignore": [ "node_modules", "amd_modules" ],
 	"keywords": ["bard", "data binding"],

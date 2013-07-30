@@ -3,10 +3,15 @@
 define(function (require) {
 
 	var NodeModel = require('./lib/NodeModel');
+	var proxy = require('./proxy/native');
 
 	function model (root, options) {
 
 		options = Object.create(options || null);
+
+		if (!options.proxy) {
+			options.proxy = proxy({ missing: function () { return ''; } });
+		}
 
 		var rdom = new NodeModel(root, options);
 

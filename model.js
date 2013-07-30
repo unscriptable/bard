@@ -34,6 +34,9 @@ define(function (require) {
 			find: function (nodeOrEvent) {
 				return rdom.findModel(nodeOrEvent);
 			},
+			findNode: function (nodeOrEvent) {
+				return rdom.findNode(nodeOrEvent);
+			},
 			clear: function () {
 				return rdom.clearModel();
 			}

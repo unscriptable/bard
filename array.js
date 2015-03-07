@@ -42,7 +42,8 @@ define(function (require) {
 
 					if ('deleted' == change.type) {
 						rdom.deleteModel(change.oldValue);
-					} else {
+					}
+					else {
 						model = change.object[change.name];
 
 						if (typeof model != 'object') {
